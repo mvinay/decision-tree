@@ -1,2 +1,2 @@
 # decision-tree
-Implementation of a classifier using decision tree written using Java 8.
+Java 8 implementation of a classifier using decision tree.
