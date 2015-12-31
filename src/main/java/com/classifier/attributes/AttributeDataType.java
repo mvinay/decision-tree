@@ -1,4 +1,4 @@
-package com.classifier;
+package com.classifier.attributes;
 
 /**
  * Created by vinay.madhusudhan on 31/12/15.
@@ -13,7 +13,7 @@ public enum AttributeDataType {
 
     // String
     STRING,
-    
+
     // Boolean
     BOOLEAN;
 }

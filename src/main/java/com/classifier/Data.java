@@ -20,11 +20,24 @@ public class Data {
         return map.get(attrName);
     }
 
-    public <T> T getAttr(String attrName) {
-        return (T) get(attrName);
+    public String getStringAttr(String attrName) {
+        return (String) get(attrName);
     }
 
     public String getClassType() {
         return this.classType;
+    }
+
+    public HashMap<String, Object> getMap() {
+        return this.map;
+    }
+
+    @Override
+    public String toString() {
+        return "Class = " + this.getClassType() + "   " +  map.toString();
+    }
+
+    public boolean checkAttrs(Data data1) {
+        return data1.getMap().equals(this.map);
     }
 }

@@ -1,4 +1,4 @@
-package com.classifier;
+package com.classifier.attributes;
 
 /**
  * Created by vinay.madhusudhan on 31/12/15.
@@ -6,11 +6,16 @@ package com.classifier;
 public class Attribute {
     private String name;
     private AttributeType type;
-    private AttributeDataType  dataType;
+    private AttributeDataType dataType;
 
     public Attribute(String name, AttributeType type, AttributeDataType dataType) {
         this.name = name;
         this.type = type;
         this.dataType = dataType;
     }
+
+    public String getName() {
+        return name;
+    }
+
 }

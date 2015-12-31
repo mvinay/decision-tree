@@ -1,15 +1,45 @@
 package com.classifier;
 
-import org.hamcrest.Condition;
-
-import java.util.List;
-
 /**
  * Created by vinay.madhusudhan on 31/12/15.
  */
 public class Node {
-    String label;
-    boolean isLeaf;
-    SplitCondition condition;
-    Node[] pointers;
+    private String label;
+    private boolean isLeaf;
+    private SplitCondition condition;
+    private Node[] pointers;
+
+    public Node(String label, SplitCondition condition) {
+        this.label = label;
+        this.condition = condition;
+
+        if (condition == null) {
+            isLeaf = true;
+        } else {
+            this.pointers = new Node[condition.values.length];
+            isLeaf = false;
+        }
+    }
+
+    public void placeChildNode(Node child, String attributeValue) {
+        int index = condition.getChildPointerPos(attributeValue);
+        assert (index < pointers.length);
+        this.pointers[index] = child;
+    }
+
+    public String getLabel() {
+        return this.label;
+    }
+
+    public Boolean isLeafNode() {
+        return this.isLeaf;
+    }
+
+    public SplitCondition getCondition() {
+        return condition;
+    }
+
+    public Node[] getPointers() {
+        return this.pointers;
+    }
 }
