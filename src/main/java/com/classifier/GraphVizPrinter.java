@@ -28,7 +28,14 @@ public class GraphVizPrinter {
         }
         gNode.style(style);
         gNode.id("Node" + node.hashCode());
-        gNode.attr("label", node.getLabel());
+
+        String label = node.getLabel();
+        if (node.isLeafNode()) {
+            label = "Class = " + label;
+        } else {
+            label += "?";
+        }
+        gNode.attr("label", label);
         return gNode;
     }
 

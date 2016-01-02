@@ -32,7 +32,7 @@ public class DecisionTree {
         }
 
         SplitCondition condition = findBestSplitFor(dataList);
-        Node root = new Node(condition.attribute.getName() + "?", condition);
+        Node root = new Node(condition.attribute.getName(), condition);
 
         final String attributeName = condition.attribute.getName();
         // Now group the data list based on the condition.
@@ -135,7 +135,7 @@ public class DecisionTree {
                 , Collectors.counting()));
 
         if (splitMap.size() == 1) {
-            return "Class : " + dataList.get(0).getClassType();
+            return dataList.get(0).getClassType();
         }
 
         String maxClassType = null;
@@ -148,7 +148,7 @@ public class DecisionTree {
                 maxValue = value;
             }
         }
-        return "Class : " + maxClassType;
+        return maxClassType;
     }
 
     private boolean stopSplitting(List<Data> dataList) {
@@ -177,5 +177,38 @@ public class DecisionTree {
 
         // If all the set of attributes are same, stop the split.
         return true;
+    }
+
+    private boolean traverseTree(final Data data, final Node node) {
+        if (node.isLeafNode()) {
+            if (node.getLabel().equals(data.getClassType())) {
+                return true;
+            }
+            logger.error("Expecting class = " + data.getClassType() + " but found " + node.getLabel());
+            return false;
+        }
+        return traverseTree(data, node.getNodeForData(data));
+    }
+
+    /*
+    * Validates the tree built using the data provided earlier.
+     */
+    public void validateTree(List<Data> testDataList) {
+        Long validCount = 0L, unknownAttrValue = 0L;
+
+        for (Data each : testDataList) {
+            try {
+                if (traverseTree(each, root)) {
+                    validCount++;
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                unknownAttrValue++;
+            }
+        }
+
+        logger.info("Number of test cases passed = " + validCount +
+                " Pass % = " + (((float) validCount) / testDataList.size()));
+        logger.info("Number of unknown attributes = " + unknownAttrValue);
     }
 }

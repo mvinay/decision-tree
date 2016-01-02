@@ -27,6 +27,12 @@ public class Node {
         this.pointers[index] = child;
     }
 
+    public Node getNodeForData(Data data) {
+        String attributeValue = data.getStringAttr(this.condition.attribute.getName());
+        int index = condition.getChildPointerPos(attributeValue);
+        return this.pointers[index];
+    }
+
     public String getLabel() {
         return this.label;
     }
