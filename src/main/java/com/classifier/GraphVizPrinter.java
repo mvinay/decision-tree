@@ -22,7 +22,10 @@ public class GraphVizPrinter {
         Node gNode = new Node();
 
         Style style = new Style();
-        style.attr("shape", "record");
+
+        if (node.isLeafNode()) {
+            style.attr("shape", "record");
+        }
         gNode.style(style);
         gNode.id("Node" + node.hashCode());
         gNode.attr("label", node.getLabel());
