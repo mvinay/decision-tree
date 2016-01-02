@@ -191,7 +191,7 @@ public class DecisionTree {
     }
 
     /*
-    * Validates the tree built using the data provided earlier.
+    * Validates the tree using the test data.
      */
     public void validateTree(List<Data> testDataList) {
         Long validCount = 0L, unknownAttrValue = 0L;

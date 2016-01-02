@@ -82,8 +82,6 @@ public class GraphVizPrinter {
 
                 if (!node.isLeafNode()) {
                     nodeQueue.add(node);
-                } else {
-
                 }
             }
         }
