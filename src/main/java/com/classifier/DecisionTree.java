@@ -1,6 +1,7 @@
 package com.classifier;
 
 import com.classifier.attributes.Attribute;
+import org.apache.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,8 +12,8 @@ import java.util.stream.Collectors;
 public class DecisionTree {
 
     public static final Integer THRESHOLD_SIZE_TO_STOP = 1;
+    private static final Logger logger = Logger.getLogger(DecisionTree.class);
     private final List<Attribute> attributeList;
-
     private Node root = null;
 
     public DecisionTree(List<Attribute> attributeList) {
@@ -57,6 +58,7 @@ public class DecisionTree {
         float minGiniIndex = Float.MAX_VALUE;
         Attribute attributeToUse = null;
 
+        logger.info("Getting the weighted index for Node " + dataList);
         for (Attribute each : attributeList) {
             float giniIndex = getWeightedGiniIndexFor(each, dataList);
             if (giniIndex < minGiniIndex) {
@@ -93,12 +95,12 @@ public class DecisionTree {
 
         // Now calculate the weighted Gini index of potential child nodes.
         for (String key : splitMap.keySet()) {
-
             List<Data> currDataList = splitMap.get(key);
             int currRecords = currDataList.size();
             weightedIndex += ((float) currRecords / totalRecords) * getGiniIndexFor(currDataList);
         }
 
+        logger.info("Weighted index for  attribute " + attribute.getName() + " and data list " + dataList + " is " + weightedIndex);
         return weightedIndex;
     }
 
@@ -106,16 +108,16 @@ public class DecisionTree {
     private float getGiniIndexFor(final List<Data> dataList) {
 
         // Group the data list based on the class type.
-        Map<String, List<Data>> splitMap = dataList.stream().collect(Collectors.groupingBy((data) ->
-                        data.getClassType()
-        ));
+        Map<String, Long> splitMap = dataList.stream().collect(Collectors.groupingBy((data) ->
+                data.getClassType()
+                , Collectors.counting()));
 
         int totalRecords = dataList.size();
         Double giniIndex = 1.0d;
 
         for (String key : splitMap.keySet()) {
-            int currClassSize = splitMap.get(key).size();
-            Float currClassRatio = ((float) currClassSize / totalRecords);
+            Float currClassSize = (float) splitMap.get(key);
+            Float currClassRatio = (currClassSize / totalRecords);
             giniIndex -= Math.pow(currClassRatio, 2);
         }
 

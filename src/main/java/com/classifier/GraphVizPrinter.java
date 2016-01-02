@@ -16,7 +16,7 @@ import java.util.Queue;
  */
 public class GraphVizPrinter {
 
-    private static int i= 0;
+    private static int i = 0;
 
     private static Node createNodeFor(com.classifier.Node node) {
         Node gNode = new Node();
@@ -30,7 +30,7 @@ public class GraphVizPrinter {
     }
 
     private static void writeGraphToFile(Graph graph) {
-        try (OutputStream out = new FileOutputStream("dotfile", true)) {
+        try (OutputStream out = new FileOutputStream("dotfile", false)) {
             graph.writeTo(out);
             out.close();
         } catch (IOException e) {
@@ -42,7 +42,7 @@ public class GraphVizPrinter {
         Graph graph = new Graph();
         graph.id("Graph" + i++);
 
-        graph.attr("labelloc","t");
+        graph.attr("labelloc", "t");
         final com.classifier.Node temp = root;
 
         graph.node(createNodeFor(temp));
@@ -61,7 +61,7 @@ public class GraphVizPrinter {
             graph.node(gSrcNode);
 
             com.classifier.Node[] array = curr.getPointers();
-            for (int i =0; i < array.length; ++i) {
+            for (int i = 0; i < array.length; ++i) {
                 com.classifier.Node node = array[i];
                 Node gDstNode = createNodeFor(node);
                 graph.node(gDstNode);

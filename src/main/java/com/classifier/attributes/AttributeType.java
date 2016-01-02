@@ -8,7 +8,7 @@ public enum AttributeType {
     BINARY,
 
     //  nominal attribute can have many values i.e., more than 2.
-    NOMINAL;
+    CATEGORICAL,
 
 
     // TODO: Add below Attribute types.
@@ -16,5 +16,5 @@ public enum AttributeType {
 //    ORDINAL,
 //
 //    // Values which are not discrete like above three.
-//    CONTINUOUS;
+    CONTINUOUS;
 }

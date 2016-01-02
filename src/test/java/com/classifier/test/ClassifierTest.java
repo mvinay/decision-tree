@@ -1,13 +1,13 @@
 package com.classifier.test;
 
-import com.classifier.*;
+import com.classifier.Data;
+import com.classifier.DecisionTree;
 import com.classifier.attributes.Attribute;
 import com.classifier.attributes.AttributeDataType;
 import com.classifier.attributes.AttributeType;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * Created by vinay.madhusudhan on 01/12/15.
@@ -15,33 +15,55 @@ import java.util.HashMap;
 public class ClassifierTest {
 
     @Test
-    public void testDecisionTree() {
+    public void testDecisionTree() throws Exception {
 
-        Attribute attribute1 = new Attribute("attr1", AttributeType.NOMINAL, AttributeDataType.STRING);
-        Attribute attribute2 = new Attribute("attr2", AttributeType.BINARY, AttributeDataType.STRING);
+        // FIXME: Convert this to JSON format
+        Attribute[] attribute = {new Attribute("Body Temparature", AttributeType.CATEGORICAL, AttributeDataType.STRING)
+                , new Attribute("Skin Cover", AttributeType.BINARY, AttributeDataType.STRING)
+                , new Attribute("Gives Birth", AttributeType.BINARY, AttributeDataType.STRING)
+                , new Attribute("Aquatic Creature", AttributeType.BINARY, AttributeDataType.STRING)
+                , new Attribute("Aerial Creature", AttributeType.BINARY, AttributeDataType.STRING)
+                , new Attribute("Has Legs", AttributeType.BINARY, AttributeDataType.STRING)
+                , new Attribute("Hibernates", AttributeType.BINARY, AttributeDataType.STRING)};
 
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("attr1", "false");
-        map.put("attr2", "true");
-        Data data1 = new Data(map, /*class=*/"NO");
+        int size = 15;
+        Data[] datas = new Data[size];
 
-        HashMap<String, Object> map2 = new HashMap<>();
-        map2.put("attr1", "true");
-        map2.put("attr2", "false");
-        Data data2 = new Data(map2, "YES");
+        for (int i = 0; i < datas.length; ++i) {
+            datas[i] = new Data();
+        }
 
-        HashMap<String, Object> map3 = new HashMap<>();
-        map3.put("attr1", "SOMETHING");
-        map3.put("attr2", "true");
-        Data data3 = new Data(map3, "YES");
+        // Get the test data from the file.
 
-        HashMap<String, Object> map4 = new HashMap<>();
-        map4.put("attr1", "SOMETHING");
-        map4.put("attr2", "false");
-        Data data4 = new Data(map4, "NO");
+        String[][] line = new String[][]{
+                {"warm-blooded", "cold-blooded", "cold-blooded", "warm-blooded", "cold-blooded", "cold-blooded",
+                        "warm-blooded", "warm-blooded", "warm-blooded",
+                        "cold-blooded", "cold-blooded", "warm-blooded", "warm-blooded", "cold-blooded", "cold-blooded"},
+                {"hair", "scales", "scales", "hair", "none", "scales", "hair", "feathers", "fur", "scales", "scales",
+                        "feathers", "quills", "scales", "none"},
+                {"yes", "no", "no", "yes", "no", "no", "yes", "no", "yes", "yes", "no", "no", "yes", "no", "no"},
+                {"no", "no", "yes", "yes", "semi", "no", "no", "no", "no", "yes", "semi", "semi", "no", "yes", "semi"},
+                {"no", "no", "no", "no", "no", "no", "yes", "yes", "no", "no", "no", "no", "no", "no", "no"},
+                {"yes", "no", "no", "no", "yes", "yes", "yes", "yes", "yes", "no", "yes", "yes", "yes", "no", "yes"},
+                {"no", "yes", "no", "no", "yes", "no", "yes", "no", "no", "no", "no", "no", "yes", "no", "yes"},
+                {"mammal", "reptile", "fish", "mammal", "amphibian", "reptile", "mammal",
+                        "bird", "mammal", "fish", "reptile", "bird", "mammal", "fish", "amphibian"}
+        };
 
-        DecisionTree tree = new DecisionTree(Arrays.asList(attribute1, attribute2));
-        tree.generateDecisionTreeFor(Arrays.asList(data1, data2, data3, data4));
+        for (int i = 0; i < line.length - 1; ++i) {
+            String[] values = line[i];
+            for (int j = 0; j < size; ++j) {
+                datas[j].getMap().put(attribute[i].getName(), values[j]);
+            }
+        }
+
+        String[] values = line[line.length - 1];
+        for (int j = 0; j < size; ++j) {
+            datas[j].setClassType(values[j]);
+        }
+
+        DecisionTree tree = new DecisionTree(Arrays.asList(attribute));
+        tree.generateDecisionTreeFor(Arrays.asList(datas));
     }
 }

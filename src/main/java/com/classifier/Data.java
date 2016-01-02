@@ -10,6 +10,9 @@ public class Data {
     private HashMap<String, Object> map;
     private String classType;
 
+    public Data() {
+        this.map = new HashMap<>();
+    }
 
     public Data(HashMap<String, Object> map, String classType) {
         this.map = map;
@@ -28,13 +31,17 @@ public class Data {
         return this.classType;
     }
 
+    public void setClassType(String classType) {
+        this.classType = classType;
+    }
+
     public HashMap<String, Object> getMap() {
         return this.map;
     }
 
     @Override
     public String toString() {
-        return "Class = " + this.getClassType() + "   " +  map.toString();
+        return "Class = " + this.getClassType() + "   " + map.toString();
     }
 
     public boolean checkAttrs(Data data1) {
